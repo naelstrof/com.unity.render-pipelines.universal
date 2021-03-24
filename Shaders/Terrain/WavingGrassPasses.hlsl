@@ -150,8 +150,8 @@ inline void InitializeSimpleLitSurfaceData(GrassVertexOutput input, out SurfaceD
     half4 diffuseAlpha = SampleAlbedoAlpha(input.uv, TEXTURE2D_ARGS(_MainTex, sampler_MainTex));
     half3 diffuse = diffuseAlpha.rgb * input.color.rgb;
 
-    half alpha = saturate(diffuseAlpha.a*input.color.a);
-    AlphaDiscard(alpha-0.05, _Cutoff);
+    half alpha = saturate(diffuseAlpha.a*input.color.a-0.2);
+    AlphaDiscard(alpha, _Cutoff);
 
     outSurfaceData = (SurfaceData)0;
     outSurfaceData.alpha = alpha;
