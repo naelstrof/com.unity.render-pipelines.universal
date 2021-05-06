@@ -137,7 +137,7 @@ GrassVertexOutput WavingGrassBillboardVert(GrassVertexInput v)
 
     TerrainBillboardGrass (v.vertex, v.tangent.xy);
     // wave amount defined by the grass height
-    float waveAmount = v.tangent.y;
+    float waveAmount = v.color.a * _WaveAndDistance.z;
     o.color = TerrainWaveGrass (v.vertex, waveAmount, v.color);
 
     InitializeVertData(v, o);
@@ -245,7 +245,7 @@ GrassVertexDepthOnlyOutput DepthOnlyVertexBillboard(GrassVertexDepthOnlyInput v)
     TerrainBillboardGrass (v.vertex, v.tangent.xy);
     // MeshGrass v.color.a: 1 on top vertices, 0 on bottom vertices
     // _WaveAndDistance.z == 0 for MeshLit
-    float waveAmount = v.tangent.y;
+    float waveAmount = v.color.a * _WaveAndDistance.z;
     o.color = TerrainWaveGrass(v.vertex, waveAmount, v.color);
 
     InitializeVertData(v, o);
@@ -316,7 +316,7 @@ GrassVertexDepthNormalOutput DepthNormalOnlyVertexBillboard(GrassVertexDepthNorm
     // _WaveAndDistance.z == 0 for MeshLit
     TerrainBillboardGrass (v.vertex, v.tangent.xy);
     // wave amount defined by the grass height
-    float waveAmount = v.tangent.y;
+    float waveAmount = v.color.a * _WaveAndDistance.z;
     o.color = TerrainWaveGrass(v.vertex, waveAmount, v.color);
 
     InitializeVertData(v, o);
