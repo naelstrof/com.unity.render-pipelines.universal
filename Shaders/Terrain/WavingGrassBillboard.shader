@@ -62,7 +62,7 @@ Shader "Hidden/TerrainEngine/Details/UniversalPipeline/BillboardWavingDoublePass
             HLSLPROGRAM
             #pragma target 2.0
 
-            #pragma vertex DepthOnlyVertex
+            #pragma vertex DepthOnlyVertexBillboard
             #pragma fragment DepthOnlyFragment
 
             // -------------------------------------
@@ -90,7 +90,7 @@ Shader "Hidden/TerrainEngine/Details/UniversalPipeline/BillboardWavingDoublePass
             HLSLPROGRAM
             #pragma target 2.0
 
-            #pragma vertex DepthNormalOnlyVertex
+            #pragma vertex DepthNormalOnlyVertexBillboard
             #pragma fragment DepthNormalOnlyFragment
 
             // -------------------------------------

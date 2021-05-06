@@ -97,7 +97,7 @@ half4 TerrainWaveGrass (inout float4 vertex, float waveAmount, half4 color)
     half3 offset = vertex.xyz - _CameraPosition.xyz;
     color.a = saturate (2 * (_WaveAndDistance.w - dot (offset, offset)) * _CameraPosition.w);
 
-    return half4(2 * waveColor * color.rgb, color.a - 0.2);
+    return half4(2 * waveColor * color.rgb, color.a-0.4);
 }
 
 void TerrainBillboardGrass( inout float4 pos, float2 offset )

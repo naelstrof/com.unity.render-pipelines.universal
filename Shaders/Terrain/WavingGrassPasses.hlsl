@@ -150,7 +150,7 @@ inline void InitializeSimpleLitSurfaceData(GrassVertexOutput input, out SurfaceD
     half4 diffuseAlpha = SampleAlbedoAlpha(input.uv, TEXTURE2D_ARGS(_MainTex, sampler_MainTex));
     half3 diffuse = diffuseAlpha.rgb * input.color.rgb;
 
-    half alpha = saturate(diffuseAlpha.a*input.color.a-0.2);
+    half alpha = saturate(diffuseAlpha.a*input.color.a);
     AlphaDiscard(alpha, _Cutoff);
 
     outSurfaceData = (SurfaceData)0;
@@ -235,6 +235,24 @@ GrassVertexDepthOnlyOutput DepthOnlyVertex(GrassVertexDepthOnlyInput v)
     return o;
 }
 
+GrassVertexDepthOnlyOutput DepthOnlyVertexBillboard(GrassVertexDepthOnlyInput v)
+{
+    GrassVertexDepthOnlyOutput o = (GrassVertexDepthOnlyOutput)0;
+    UNITY_SETUP_INSTANCE_ID(v);
+    UNITY_TRANSFER_INSTANCE_ID(v, o);
+    UNITY_INITIALIZE_VERTEX_OUTPUT_STEREO(o);
+
+    TerrainBillboardGrass (v.vertex, v.tangent.xy);
+    // MeshGrass v.color.a: 1 on top vertices, 0 on bottom vertices
+    // _WaveAndDistance.z == 0 for MeshLit
+    float waveAmount = v.tangent.y;
+    o.color = TerrainWaveGrass(v.vertex, waveAmount, v.color);
+
+    InitializeVertData(v, o);
+
+    return o;
+}
+
 half4 DepthOnlyFragment(GrassVertexDepthOnlyOutput input) : SV_TARGET
 {
     Alpha(SampleAlbedoAlpha(input.uv, TEXTURE2D_ARGS(_MainTex, sampler_MainTex)).a, input.color, _Cutoff);
@@ -280,6 +298,25 @@ GrassVertexDepthNormalOutput DepthNormalOnlyVertex(GrassVertexDepthNormalInput v
     // MeshGrass v.color.a: 1 on top vertices, 0 on bottom vertices
     // _WaveAndDistance.z == 0 for MeshLit
     float waveAmount = v.color.a * _WaveAndDistance.z;
+    o.color = TerrainWaveGrass(v.vertex, waveAmount, v.color);
+
+    InitializeVertData(v, o);
+
+    return o;
+}
+
+GrassVertexDepthNormalOutput DepthNormalOnlyVertexBillboard(GrassVertexDepthNormalInput v)
+{
+    GrassVertexDepthNormalOutput o = (GrassVertexDepthNormalOutput)0;
+    UNITY_SETUP_INSTANCE_ID(v);
+    UNITY_TRANSFER_INSTANCE_ID(v, o);
+    UNITY_INITIALIZE_VERTEX_OUTPUT_STEREO(o);
+
+    // MeshGrass v.color.a: 1 on top vertices, 0 on bottom vertices
+    // _WaveAndDistance.z == 0 for MeshLit
+    TerrainBillboardGrass (v.vertex, v.tangent.xy);
+    // wave amount defined by the grass height
+    float waveAmount = v.tangent.y;
     o.color = TerrainWaveGrass(v.vertex, waveAmount, v.color);
 
     InitializeVertData(v, o);
